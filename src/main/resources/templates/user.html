@@ -4,8 +4,8 @@
     <title>Spring Security Example</title>
 </head>
 <body>
-<h1>User, welcome spring boot security page!</h1>
 
+<p th:text="${'Hello, ' + user.getUsername() + '. Nice to meet you!' + ' Your age is ' + user.getAge()}"></p>
 
 </body>
 </html>
