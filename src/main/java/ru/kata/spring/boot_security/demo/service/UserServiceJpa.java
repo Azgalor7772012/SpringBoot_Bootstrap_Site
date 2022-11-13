@@ -1,12 +1,12 @@
 package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
 
 import java.util.List;
@@ -17,21 +17,26 @@ public class UserServiceJpa {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
 
     @Autowired
-    public UserServiceJpa(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceJpa(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
     }
 
     @Transactional(readOnly = true)
     public Optional<User> getUserByUsername(String name) {
        return userRepository.findByUsername(name);
     }
+
+
     @Transactional
-    public void register(User user) {
-        user.addRoleToUser(new Role("ROLE_USER"));
-        user.addRoleToUser(new Role("ROLE_ADMIN"));
+    public void register(User user, List<String> roles) {
+        for (String role : roles) {
+            user.addRoleToUser(new Role(role));
+        }
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
         userRepository.save(user);
@@ -48,13 +53,24 @@ public class UserServiceJpa {
     }
 
     @Transactional
-    public void delete(User user) {
-        userRepository.delete(user);
+    public void update(User user, List<String> roles) {
+        Long userId = user.getId();
+
+        roleRepository.deleteAllByUserId(userId);
+
+        for (String role : roles) {
+            user.addRoleToUser(new Role(role));
+        }
+
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+        userRepository.save(user);
     }
 
     @Transactional
-    public void update(User user) {
-        userRepository.save(user);
+    public void delete(Long id) {
+        userRepository.deleteById(id);
     }
+
 
 }

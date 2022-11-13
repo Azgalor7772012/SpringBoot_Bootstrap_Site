@@ -2,22 +2,22 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Registration</title>
+    <title>Add new user by admin</title>
 </head>
 <body>
 
-<form th:method="POST" th:action="@{/registration}" th:object="${user}">
+<form th:method="POST" th:action="@{/createNewUser}" th:object="${user}">
   <label for="username">Enter username: </label>
   <input type="text" th:field="*{username}" id="username"/>
-    <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name Error</div>
+  <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name Error</div>
   <br/>
   <label for="age">Enter your age: </label>
   <input type="text" th:field="*{age}" id="age"/>
-    <div style="color:red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age Error</div>
+  <div style="color:red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age Error</div>
   <br/>
   <label for="password">Enter password: </label>
   <input type="password" th:field="*{password}" id="password"/>
-    <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Email Error</div>
+  <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Email Error</div>
 
 
   <fieldset>
@@ -27,20 +27,8 @@
   </fieldset>
 
 
-  <input type="submit" value="Sign up!"/>
+  <input type="submit" value="Create new user"/>
 </form>
-
-
-<!--<form>-->
-<!--  <input id="html" type="checkbox">-->
-<!--  <label for="html">Admin</label>-->
-<!--</form>-->
-
-<!--<br/>-->
-
-<!--<form>-->
-<!--  <input type="checkbox" checked> <label>User</label>-->
-<!--</form>-->
 
 </body>
 </html>

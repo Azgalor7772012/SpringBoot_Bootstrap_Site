@@ -15,14 +15,18 @@
 <p th:text="${'He is ' + user.getAge() + ' years old.'}"></p>
 
 
-<form th:method="GET" th:action="@{/edit}" th:object="${user}">
+<form th:method="GET" th:action="@{/edit/{id} (id = ${user.getId()})}" th:object="${user}">
   <input type="submit" value="Edit this user"/>
+</form>
+
+<form th:method="DELETE" th:action="@{/delete/{id} (id = ${user.getId()})}" th:object="${user}">
+  <input type="submit" value="Delete this user"/>
 </form>
 
 <br>
 
-<form th:method="DELETE" th:action="@{/delete}" th:object="${user}">
-  <input type="submit" value="Delete this user"/>
+<form th:method="POST" th:action="@{/logout}">
+    <input type="submit" value="Logout"/>
 </form>
 
 </body>

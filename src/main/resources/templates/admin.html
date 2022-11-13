@@ -19,6 +19,17 @@
     </tr>
 </table>
 
+<br>
+
+<form th:method="GET" th:action="@{/createNewUser}">
+    <input type="submit" value="Add user"/>
+</form>
+<br>
+
+<form th:method="POST" th:action="@{/logout}">
+    <input type="submit" value="Logout"/>
+</form>
+
 
 </body>
 </html>

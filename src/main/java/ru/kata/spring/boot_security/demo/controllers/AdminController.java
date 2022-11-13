@@ -9,47 +9,41 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserServiceJpa;
 import ru.kata.spring.boot_security.demo.util.UserValidator;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 @Controller
-public class Auth {
+public class AdminController {
 
     private final UserValidator userValidator;
     private final UserServiceJpa userServiceJpa;
 
     @Autowired
-    public Auth(UserValidator userValidator, UserServiceJpa userServiceJpa) {
+    public AdminController(UserValidator userValidator, UserServiceJpa userServiceJpa) {
         this.userValidator = userValidator;
         this.userServiceJpa = userServiceJpa;
     }
 
-
-    @GetMapping("/registration")
-    public String toRegister(@ModelAttribute("user") User user) {
-        return "registration";
+    @GetMapping("/createNewUser")
+    public String getCreateNewUser(@ModelAttribute("user") User user) {
+        return "addNewUserByAdmin";
     }
 
-
-    @GetMapping("/login")
-    public String toLogin() {
-        return "login";
-    }
-
-
-    @PostMapping("/registration")
-    public String postRegister(@ModelAttribute("user")
-                                   @Valid User user,
-                               BindingResult bindingResult) {
+    @PostMapping("/createNewUser")
+    public String postCreateNewUser(@ModelAttribute("user") @Valid User user,
+                                    BindingResult bindingResult, @RequestParam(value = "chosen_roles", required = false) List<String> roles) {
         userValidator.validate(user, bindingResult);
 
-        if (bindingResult.hasErrors()) {
-            return "registration";
+        if(bindingResult.hasErrors()) {
+            return "addNewUserByAdmin";
         }
-        userServiceJpa.register(user);
-        return "redirect:/hello";
-    }
 
+        userServiceJpa.register(user, roles);
+
+        return "redirect:/admin";
+    }
 
     @GetMapping("/admin")
     public String adminPage(Model model) {
@@ -71,21 +65,30 @@ public class Auth {
         return "userInfo";
     }
 
-    @DeleteMapping("/delete")
-    public String deleteUser(@ModelAttribute("user") User user) {
-        userServiceJpa.delete(user);
+    @DeleteMapping("/delete/{id}")
+    public String deleteUser(@PathVariable("id") Long id) {
+        userServiceJpa.delete(id);
         return "redirect:/admin";
     }
 
-    @GetMapping("/edit")
-    public String getEditUser(@ModelAttribute("user") User user, Model model) {
-        model.addAttribute("user", user);
+    @GetMapping("/edit/{id}")
+    public String getEditUser(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("user", userServiceJpa.showOneUser(id).get());
         return "edit";
     }
 
     @PatchMapping("/edit/{id}")
-    public String patchEditUser(@PathVariable("id") Long id,@ModelAttribute("user") User user) {
-        userServiceJpa.update(userServiceJpa.showOneUser(id).get());
+    public String patchEditUser(@ModelAttribute("user") @Valid User user,BindingResult bindingResult,
+                                HttpServletRequest request) {
+
+        userValidator.validate(user, bindingResult);
+        if(bindingResult.hasErrors()) {
+            return "edit";
+        }
+
+        List<String> roles = List.of(request.getParameterValues("chosen_roles"));
+
+        userServiceJpa.update(user, roles);
         return "redirect:/admin";
     }
 }
