@@ -46,8 +46,11 @@ public class AdminController {
     }
 
     @GetMapping("/admin")
-    public String adminPage(Model model) {
+    public String adminPage(Model model, Principal principal, @ModelAttribute("changedUser") User user) {
         model.addAttribute("users", userServiceJpa.showAllUsers());
+        User loggedUser = userServiceJpa.getUserByUsername(principal.getName()).get();
+        model.addAttribute("loggedUser", loggedUser);
+
         return "admin";
     }
 

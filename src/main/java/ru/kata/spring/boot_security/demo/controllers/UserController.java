@@ -54,6 +54,15 @@ public class UserController {
         return "redirect:/hello";
     }
 
+    @GetMapping("/index")
+    public String index() {
+        return "index";
+    }
+    @GetMapping("/index2")
+    public String index2() {
+        return "index2";
+    }
+
 
 
 }

@@ -27,8 +27,8 @@ public class UserServiceJpa {
     }
 
     @Transactional(readOnly = true)
-    public Optional<User> getUserByUsername(String name) {
-       return userRepository.findByUsername(name);
+    public Optional<User> getUserByUsername(String email) {
+       return userRepository.findByEmail(email);
     }
 
 
@@ -58,9 +58,15 @@ public class UserServiceJpa {
 
         roleRepository.deleteAllByUserId(userId);
 
+        StringBuilder stringOfRoles = new StringBuilder();
+
         for (String role : roles) {
             user.addRoleToUser(new Role(role));
+            stringOfRoles.append(role.substring(5)).append(" ");
         }
+
+        user.setRole(stringOfRoles.toString());
+
 
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
@@ -71,6 +77,4 @@ public class UserServiceJpa {
     public void delete(Long id) {
         userRepository.deleteById(id);
     }
-
-
 }
