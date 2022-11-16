@@ -3,21 +3,20 @@ package ru.kata.spring.boot_security.demo.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.service.UserServiceJpa;
+import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
 import java.util.Optional;
 
 @Component
 public class UserValidator implements Validator {
 
-    private final UserServiceJpa userService;
+    private final UserServiceImpl userService;
 
     @Autowired
-    public UserValidator(UserServiceJpa userService) {
+    public UserValidator(UserServiceImpl userService) {
         this.userService = userService;
     }
 

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.service.UserServiceJpa;
+import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 import ru.kata.spring.boot_security.demo.util.UserValidator;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,12 +16,12 @@ import java.util.List;
 public class UserController {
 
     private final UserValidator userValidator;
-    private final UserServiceJpa userServiceJpa;
+    private final UserServiceImpl userServiceImpl;
 
     @Autowired
-    public UserController(UserValidator userValidator, UserServiceJpa userServiceJpa) {
+    public UserController(UserValidator userValidator, UserServiceImpl userServiceImpl) {
         this.userValidator = userValidator;
-        this.userServiceJpa = userServiceJpa;
+        this.userServiceImpl = userServiceImpl;
     }
 
 
@@ -50,7 +50,7 @@ public class UserController {
             return "registration";
         }
         List<String> roles = List.of(request.getParameterValues("chosen_roles"));
-        userServiceJpa.register(user, roles);
+        userServiceImpl.register(user, roles);
         return "redirect:/hello";
     }
 

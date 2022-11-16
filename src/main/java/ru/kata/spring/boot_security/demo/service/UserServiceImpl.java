@@ -13,14 +13,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserServiceJpa {
+public class UserServiceImpl {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
 
     @Autowired
-    public UserServiceJpa(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
@@ -34,9 +34,17 @@ public class UserServiceJpa {
 
     @Transactional
     public void register(User user, List<String> roles) {
+
+        StringBuilder stringOfRoles = new StringBuilder();
+
         for (String role : roles) {
             user.addRoleToUser(new Role(role));
+            stringOfRoles.append(role.substring(5)).append(" ");
         }
+
+        user.setRole(stringOfRoles.toString());
+
+
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
         userRepository.save(user);
