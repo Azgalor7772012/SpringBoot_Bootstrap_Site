@@ -56,15 +56,15 @@ public class UserServiceImpl {
     }
 
     @Transactional
+    @Deprecated
     public Optional<User> showOneUser(Long id) {
        return userRepository.findById(id);
     }
 
     @Transactional
     public void update(User user, List<String> roles) {
-        Long userId = user.getId();
-
-        roleRepository.deleteAllByUserId(userId);
+        Long id = user.getId();
+        roleRepository.deleteAllByUserId(id);
 
         StringBuilder stringOfRoles = new StringBuilder();
 

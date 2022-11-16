@@ -25,19 +25,15 @@ public class AdminController {
         this.userServiceImpl = userServiceImpl;
     }
 
-    @GetMapping("/createNewUser")
-    public String getCreateNewUser(@ModelAttribute("user") User user) {
-        return "addNewUserByAdmin";
-    }
 
     @PostMapping("/createNewUser")
     public String postCreateNewUser(@ModelAttribute("newUser") @Valid User user,
                                     BindingResult bindingResult, @RequestParam(value = "role", required = false) List<String> roles) {
         userValidator.validate(user, bindingResult);
 
-//        if(bindingResult.hasErrors()) {
-//            return "addNewUserByAdmin";
-//        }
+        if(bindingResult.hasErrors()) {
+            return "admin";
+        }
 
         userServiceImpl.register(user, roles);
 
@@ -58,19 +54,6 @@ public class AdminController {
         return "admin";
     }
 
-    @GetMapping("/user")
-    public String userInfo(Principal principal, Model model) {
-        User user = userServiceImpl.getUserByUsername(principal.getName()).get();
-
-        model.addAttribute("user", user);
-        return "user";
-    }
-
-    @GetMapping("/user/{id}")
-    public String currentUser(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("user", userServiceImpl.showOneUser(id).get());
-        return "userInfo";
-    }
 
     @DeleteMapping("/delete/{id}")
     public String deleteUser(@PathVariable("id") Long id) {
@@ -78,20 +61,16 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    @GetMapping("/edit/{id}")
-    public String getEditUser(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("user", userServiceImpl.showOneUser(id).get());
-        return "edit";
-    }
+
 
     @PatchMapping("/edit/{id}")
-    public String patchEditUser(@ModelAttribute("user") @Valid User user,BindingResult bindingResult,
+    public String patchEditUser(@ModelAttribute("newUser") @Valid User user,BindingResult bindingResult,
                                 @RequestParam("role") List<String> roles) {
 
         userValidator.validate(user, bindingResult);
-//        if(bindingResult.hasErrors()) {
-//            return "edit";
-//        }
+        if(bindingResult.hasErrors()) {
+            return "admin";
+        }
 
         userServiceImpl.update(user, roles);
         return "redirect:/admin";
