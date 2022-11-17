@@ -118,28 +118,28 @@
                                                                 name</b></label>
                                                             <input th:name="firstName" th:type="text"
                                                                    class="form-control" id="firstNameRed"
-                                                                   th:value="${user.firstName}"/>
+                                                                   th:value="${user.firstName}" required/>
 
                                                             <label for="lastNameRed"><b>Last
                                                                 name</b></label>
                                                             <input th:name="lastName" th:type="text"
                                                                    class="form-control" id="lastNameRed"
-                                                                   th:value="${user.lastName}"/>
+                                                                   th:value="${user.lastName}" required/>
 
                                                             <label for="ageRed"><b>Age</b></label>
                                                             <input th:name="age" th:type="text"
                                                                    class="form-control" id="ageRed"
-                                                                   th:value="${user.age}"/>
+                                                                   th:value="${user.age}" required/>
 
                                                             <label for="emailRed"><b>Email</b></label>
                                                             <input th:name="email" th:type="text"
                                                                    class="form-control" id="emailRed"
-                                                                   th:value="${user.email}"/>
+                                                                   th:value="${user.email}" required/>
 
                                                             <label for="passwordRed"><b>Password</b></label>
                                                             <input th:name="password" th:type="password"
                                                                    class="form-control" id="passwordRed"
-                                                                   th:value="${user.password}"/>
+                                                                   th:value="${user.password}" required/>
 
                                                             <label for="rolesRed"
                                                                    class="form-label">Role</label>
@@ -254,33 +254,33 @@
                                         name</b></label>
                                     <input th:name="firstName" th:type="text"
                                            class="form-control" id="newUserFirstName"
-                                           th:field="*{firstName}"/>
+                                           th:field="*{firstName}" required/>
 
                                     <label for="newUserLastName"><b>Last
                                         name</b></label>
                                     <input th:name="lastName" th:type="text"
                                            class="form-control" id="newUserLastName"
-                                           th:field="*{lastName}"/>
+                                           th:field="*{lastName}" required/>
 
                                     <label for="newUserAge"><b>Age</b></label>
                                     <input th:name="age" th:type="text"
                                            class="form-control" id="newUserAge"
-                                           th:field="*{age}"/>
+                                           th:field="*{age}" required/>
 
                                     <label for="newUserEmail"><b>Email</b></label>
                                     <input th:name="email" th:type="text"
                                            class="form-control" id="newUserEmail"
-                                           th:field="*{email}"/>
+                                           th:field="*{email}" required/>
 
                                     <label for="newUserPassword"><b>Password</b></label>
                                     <input th:name="password" th:type="password"
                                            class="form-control" id="newUserPassword"
-                                           th:field="*{password}"/>
+                                           th:field="*{password}" required/>
 
                                     <label for="newUserRoles"
                                            class="form-label">Role</label>
                                     <select class="form-select" multiple name="role"
-                                            id="newUserRoles">
+                                            id="newUserRoles" required>
                                         <option value="ROLE_USER">USER</option>
                                         <option value="ROLE_ADMIN">ADMIN</option>
                                     </select>

@@ -67,10 +67,10 @@ public class AdminController {
     public String patchEditUser(@ModelAttribute("newUser") @Valid User user,BindingResult bindingResult,
                                 @RequestParam("role") List<String> roles) {
 
-        userValidator.validate(user, bindingResult);
-        if(bindingResult.hasErrors()) {
-            return "admin";
-        }
+//        userValidator.validate(user, bindingResult);
+//        if(bindingResult.hasErrors()) {
+//            return "admin";
+//        }
 
         userServiceImpl.update(user, roles);
         return "redirect:/admin";
