@@ -64,7 +64,7 @@ public class UserServiceImpl {
     @Transactional
     public void update(User user, List<String> roles) {
         Long id = user.getId();
-        roleRepository.deleteAllByUserId(id);
+        roleRepository.deleteAllByUsersId(id);
 
         StringBuilder stringOfRoles = new StringBuilder();
 

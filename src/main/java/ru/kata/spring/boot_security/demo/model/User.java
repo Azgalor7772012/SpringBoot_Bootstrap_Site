@@ -29,22 +29,26 @@ public class User implements UserDetails {
     @Column(name = "age")
     private Integer age;
 
-    @OneToMany(cascade = CascadeType.ALL,
-    mappedBy = "user")
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
     private List<Role> roles;
 
     @Column(name = "role")
-    private String Role;
+    private String role;
 
     @Column(name = "email")
     private String email;
 
     public String getRole() {
-        return Role;
+        return role;
     }
 
     public void setRole(String role) {
-        Role = role;
+        this.role = role;
     }
 
     public String getEmail() {
@@ -63,7 +67,7 @@ public class User implements UserDetails {
             roles = new ArrayList<>();
         }
         roles.add(role);
-        role.setUser(this);
+
 
     }
 
